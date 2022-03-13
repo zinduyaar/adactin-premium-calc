@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { CalculatePremiumRequestModel } from '../models/calculate-premium.request.model';
 import { OccupationList } from '../models/occupation.enum';
+import { PremiumService } from './premium.service';
 
 @Component({
   selector: 'app-calc',
@@ -16,7 +18,9 @@ export class CalcComponent implements OnInit {
   minDateForDOBPicker: Date;
   maxDateForDOBPicker: Date;
   age: number;
-  constructor() {
+  calculatedPremium: number;
+  errors: any = {};
+  constructor(private _premiumService: PremiumService) {
     this.occupations = OccupationList;
     this.fullName = '';
     this.sumAssured = 0;
@@ -25,6 +29,7 @@ export class CalcComponent implements OnInit {
     this.minDateForDOBPicker = new Date(currentDate.getFullYear() - 101, currentDate.getMonth(), currentDate.getDate());
     this.maxDateForDOBPicker = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());;
     this.age = 0;
+    this.calculatedPremium = 0;
   }
 
   ngOnInit(): void {
@@ -51,10 +56,24 @@ export class CalcComponent implements OnInit {
   }
 
   validateForm(): boolean {
-    return !(!this.fullName) && this.age > 0 && this.sumAssured > 0 && this.selectedOccupation > 0;
+    // return !(!this.fullName) && this.age > 0 && this.sumAssured > 0 && this.selectedOccupation > 0;
+    return true;
   }
 
   fetchPremium() {
-    console.log('api service');
+    this.calculatedPremium = 0;
+    this.errors = {};
+    const requestBody: CalculatePremiumRequestModel = {
+      FullName: this.fullName,
+      Age: this.age,
+      DeathSumAssured: this.sumAssured,
+      OccupationId: this.selectedOccupation
+    }
+    this._premiumService.calculatePremium(requestBody).subscribe(result => {
+      this.calculatedPremium = result;
+    },
+      error => {
+        this.errors = error.error.errors;
+      })
   }
 }
