@@ -1,0 +1,41 @@
+<div class="calc-wrapper">
+    <div class="main-content">
+        <div class="row">
+            <mat-form-field class="full-width">
+                <mat-label>Full Name</mat-label>
+                <input matInput required>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="full-width">
+                <mat-label>Date Of Birth</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <span style="padding: 18px; color: grey;">Or</span>
+            <mat-form-field style="max-width: 50px;">
+                <mat-label>Age</mat-label>
+                <input matInput type="number" max="100" min="1" required>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="full-width">
+                <mat-label>Occupation</mat-label>
+                <select matNativeControl required>
+                    <option value="none">Select</option>
+                    <option *ngFor="let occupation of occupations" value="occupation">{{occupation}}</option>
+                </select>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="full-width">
+                <mat-label>Death – Sum Insured</mat-label>
+                <input type="number" matInput min="1" max="999999" required>
+            </mat-form-field>
+        </div>
+        <div class="row" style="margin: 0 auto;">
+            <button mat-raised-button color="accent">Calculate</button>
+        </div>
+    </div>
+</div>
