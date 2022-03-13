@@ -56,8 +56,7 @@ export class CalcComponent implements OnInit {
   }
 
   validateForm(): boolean {
-    // return !(!this.fullName) && this.age > 0 && this.sumAssured > 0 && this.selectedOccupation > 0;
-    return true;
+    return !(!this.fullName) && this.age > 0 && this.sumAssured > 0 && this.selectedOccupation > 0;
   }
 
   fetchPremium() {
